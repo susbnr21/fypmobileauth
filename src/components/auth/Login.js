@@ -4,10 +4,13 @@ import { StyleSheet, Text, View,
      KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } 
      from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+// For Login
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
+// import axios from 'axios'
 
 
 
@@ -16,7 +19,7 @@ class Login extends Component{
         headerStyle: {backgroundColor: '#8B8C8C', borderBottomWidth: 0},
         headerShown: false,
       }
-
+    
       constructor() {
         super();
         this.state = {
@@ -32,7 +35,6 @@ class Login extends Component{
           this.props.history.push("/dashboard");
         }
       }
-
       componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
           this.props.history.push("/dashboard");
@@ -45,11 +47,11 @@ class Login extends Component{
         }
       }
 
-      onChange = e => {
+      handleChange = e => {
         this.setState({ [e.target.id]: e.target.value });
       };
 
-      onSubmit = e => {
+      handleSubmit = e => {
         e.preventDefault();
     
         const userData = {
@@ -78,13 +80,20 @@ class Login extends Component{
                                     </View>
                                     <View style={styles.infoContainer}>
                                         <TextInput style={styles.input}
-                                            placeholder='Email'
+                                            onChange={this.handleChange}
+                                            // value={this.state.email}
+                                            id="email"
+                                            type="email"
+                                            placeholder="Email"
                                             placeholderTextColor='rgba(255,255,255,0.8)'
-                                            returnKeyType='next'
-                                            autoCorrect={false}
-                                            onSubmitEditing={() => this.refs.txtPassword.focus()}
+                                            // returnKeyType='next'
+                                            // autoCorrect={false}
+                                            // onSubmitEditing={() => this.refs.txtPassword.focus()}
                                             />
                                         <TextInput style={styles.input}
+                                            onChange={this.handleChange}
+                                            // value={this.state.password}
+                                            id="password"
                                             placeholder='Password'
                                             placeholderTextColor='rgba(255,255,255,0.8)'
                                             secureTextEntry
@@ -95,8 +104,10 @@ class Login extends Component{
 
                                     <TouchableOpacity
                                         style={styles.buttonContainer}
-                                        onPress={() =>
-                                            this.props.navigation.navigate('Dashboard')}>
+                                        // onPress={() =>
+                                        //     this.props.navigation.navigate('Dashboard')}
+                                        
+                                            >
                                         <Text style={styles.buttonText} type="submit">LOG IN </Text>
                                     </TouchableOpacity>
 
@@ -215,3 +226,5 @@ export default connect(
   mapStateToProps,
   { loginUser }
 )(Login);
+
+// export default Login;

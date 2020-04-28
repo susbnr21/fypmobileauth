@@ -6,7 +6,7 @@ import { StyleSheet, Text, View,
 class About extends Component{
     static navigationOptions = {
         headerStyle: {backgroundColor: '#8B8C8C', borderBottomWidth: 0},
-        header: null,
+        headerShown: false,
     }
 
     render() {

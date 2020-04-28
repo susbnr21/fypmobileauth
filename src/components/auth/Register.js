@@ -4,54 +4,56 @@ import { StyleSheet, Text, View,
     KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ScrollView } 
     from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+// import axios from 'axios';
 
-// import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
-// import { registerUser } from '../../actions/authActions';
-// import classnames from 'classnames';
+import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/authActions";
 
 class Register extends Component{
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     name: "",
-  //     email: "",
-  //     password: "",
-  //     password2: "",
-  //     errors: {}
-  //   };
-  // }
-  // componentDidMount() {
-  //   // If logged in and user navigates to Register page, should redirect them to dashboard
-  //   if (this.props.auth.isAuthenticated) {
-  //     this.props.history.push("/dashboard");
-  //   }
-  // }
+  constructor() {
+    super();
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
+      errors: {}
+    };
+  }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.errors) {
-  //     this.setState({
-  //       errors: nextProps.errors
-  //     });
-  //   }
-  // }
+  componentDidMount() {
+    // If logged in and user navigates to Register page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
 
-  // onChange = e => {
-  //   this.setState({ [e.target.id]: e.target.value });
-  // };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
+    }
+  }
 
-  // onSubmit = e => {
-  //   e.preventDefault();
+  handleChange = e => {
+    this.setState({ [e.target.id]: e.target.value })
+  };
 
-  //   const newUser = {
-  //     name: this.state.name,
-  //     email: this.state.email,
-  //     password: this.state.password,
-  //     password2: this.state.password2
-  //   };
+  handleSubmit = e => {
+    e.preventDefault();
 
-  //   this.props.registerUser(newUser, this.props.history);
-  // };
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+
+    this.props.registerUser(newUser, this.props.history);
+  };
 
     static navigationOptions = {
         headerStyle: {backgroundColor: '#8B8C8C', borderBottomWidth: 0},
@@ -64,7 +66,7 @@ class Register extends Component{
         return(
                 <ImageBackground source={require('../../assets/boxs.jpeg')} style={styles.regform}>
                   <ScrollView>
-                    <StatusBar barStyle='light-content'/>
+                    <StatusBar barStyle='dark-content'/>
                     <KeyboardAvoidingView behavior='padding'>
                         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                             <View style={styles.regis}>
@@ -73,31 +75,47 @@ class Register extends Component{
                                 </Image>
 
                                 <TextInput style={styles.textinput}
-                                            placeholder='Your Name'/>
+                                            placeholder='Your Name'
+                                            value={this.state.name}
+                                            onChange={this.handleChange}
+                                            />
 
                                 <TextInput style={styles.textinput}
-                                            placeholder='Your Email'/>
+                                            placeholder='Your Email'
+                                            value={this.state.email}
+                                            onChange={this.handleChange}
+                                            />
                                 
                                 <TextInput style={styles.textinput}
                                             placeholder='Your Password'
-                                            secureTextEntry={true}/>
+                                            value={this.state.password}
+                                            secureTextEntry={true}
+                                            onChange={this.handleChange}
+                                            />
 
                                 <TextInput style={styles.textinput}
                                             placeholder='Confirm Password'
-                                            secureTextEntry={true}/>
+                                            value={this.state.password2}
+                                            secureTextEntry={true}
+                                            onChange={this.handleChange}
+                                            />
 
                                 <TouchableOpacity
                                     style={styles.regbtncontainer}
-                                    onPress={() =>
-                                        this.props.navigation.navigate('')}>
-                                        <Text style={styles.regbtntxt} type="submit">Register</Text>
+                                    // onPress={() =>
+                                    //     this.props.navigation.navigate('')}
+                                        onPress={this.handleSubmit}
+                                        type="submit"
+                                        >
+                                        <Text style={styles.regbtntxt}>Register</Text>
                                 </TouchableOpacity>
 
                                 <Text style={styles.btnacc}>Already Have an Account?</Text>
 
                                 <TouchableOpacity
                                 onPress={() => 
-                                    this.props.navigation.navigate('Login')}>
+                                    this.props.navigation.navigate('Login')}
+                                    >
                                     <Text style={styles.loginbtn}>LOG IN</Text>
                                 </TouchableOpacity>
                                 
@@ -173,4 +191,18 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Register;
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(Register);

@@ -30,7 +30,7 @@ class Dashboard extends Component {
                         </Image>
                     </View>
 
-                        <Text style={styles.title}>Hey There, Sushil</Text> 
+                        <Text style={styles.title}>Hey There,</Text>{user.name}
                         <Text style={styles.setitle}>Welcome To Rental Shifters 👏</Text>
 
                         <TouchableOpacity
@@ -42,8 +42,8 @@ class Dashboard extends Component {
 
                         <TouchableOpacity
                         style={styles.btx}
-                        onPress={() =>
-                            this.props.navigation.navigate('Login')}
+                        // onPress={() =>
+                        //     this.props.navigation.navigate('Login')}
                             onClick={this.onLogoutClick}>
                             <Text style={styles.txtbtx}>LOG OUT</Text>
                         </TouchableOpacity>
